@@ -1,0 +1,32 @@
+# /!\  This file should only be filled by hand
+#
+#  The packages installed are the ones needed to pass the tests
+#
+#   - conda should be prioritized in comparison to pip
+#
+#   - Unless direct conflict, we should not list:
+#       - Package sub-depencies
+#       - Package hash
+#
+#   - We want to minimize the use of version number
+#
+# https://stackoverflow.com/questions/39280638/how-to-share-conda-environments-across-platforms
+#
+# If a choice is linked to a temporary problem, a link on the matter is appreciated
+
+name: euler
+
+channels:
+  # - pytorch
+  - default
+  - conda-forge
+
+dependencies:
+  - python=3.8
+  - numpy
+  - fire
+  - tqdm
+
+  # - pip
+  # - pip:
+  #   - 
