@@ -1,4 +1,6 @@
 from tqdm import tqdm
+
+from src.utils.get_primes import find_primes
 from functools import lru_cache
 
 
@@ -10,7 +12,9 @@ def fibonacci(n: int):
 		return 2
 	return fibonacci(n - 1) + fibonacci(n - 2)
 
-def get_primes(max_prime=4e6, verbose=True):
+def get_primes_up_to(max_prime=4e6, verbose=True):
+	return find_primes(max_prime, verbose=True)
+
 	with tqdm(total=max_prime, disable=not verbose) as pbar:
 		primes_list = [2]
 		for i in range(primes_list[-1] + 1, max_prime):
@@ -22,6 +26,24 @@ def get_primes(max_prime=4e6, verbose=True):
 			if is_prime:
 				primes_list.append(i)
 				pbar.update(primes_list[-1] - primes_list[-2])
+		return(primes_list)
+
+
+def get_n_primes(n=10_001, verbose=True):
+	with tqdm(total=n - 1, disable=not verbose) as pbar:
+		primes_list = [2]
+		pbar.update(1)
+		i = primes_list[-1] + 1
+		while len(primes_list) < n:
+			is_prime = True
+			for prime in primes_list:
+				if i % prime == 0:
+					is_prime = False
+					break
+			if is_prime:
+				primes_list.append(i)
+				pbar.update(1)
+			i += 1
 		return(primes_list)
 
 
@@ -65,3 +87,15 @@ def is_palindrome(number: int):
 	left = string_number[:half]
 	right = string_number[half + (size % 2):]
 	return left == right[::-1]
+
+
+def sum_to_nb(nb):
+    neg = 1
+    if (nb < 0):
+        nb = -nb
+        neg = -1
+    ans = (nb + 1) * (nb // 2)
+    if (nb % 2):
+        ans += (nb // 2) + 1
+    ans *= neg
+    return ans
