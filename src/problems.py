@@ -188,7 +188,7 @@ def problem_12():
     max_div = 0
     verbose = True
     with tqdm(total=max_factors, disable=not verbose) as pbar:
-        i = 5984
+        i = 5984  # 5984 has 480 divisors
         while True:
             triangle_nb = sum_to_nb(i)
             # factors = get_prime_factors(triangle_nb, primes_list=primes)
