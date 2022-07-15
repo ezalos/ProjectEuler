@@ -250,6 +250,12 @@ def problem_15():
     solution = fct(a + b) / (fct(a) * fct(b))
     return solution
 
+def problem_16():
+	return sum([int(l) for l in str(2 ** 1000)])
+
+
+def problem_20():
+	return sum([int(l) for l in str(math.factorial(100))])
 
 all_problems = {
     1: problem_1,
@@ -267,4 +273,6 @@ all_problems = {
     13: problem_13,
     14: problem_14,
     15: problem_15,
+    16: problem_16,
+    20: problem_20,
 }
