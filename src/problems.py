@@ -254,8 +254,156 @@ def problem_16():
 	return sum([int(l) for l in str(2 ** 1000)])
 
 
+def write_number(nb):
+	units = {
+		1: "one",
+		2: "two",
+		3: "three",
+		4: "four",
+		5: "five",
+		6: "six",
+		7: "seven",
+		8: "eight",
+		9: "nine",
+	}
+	decimal = {
+		10: "ten",
+		20: "twenty",
+		30: "thirty",
+		40: "forty",
+		50: "fifty",
+		60: "sixty",
+		70: "seventy",
+		80: "eighty",
+		90: "ninety"
+	}
+	exception = {
+		11: "eleven",
+		12: "twelve",
+		13: "thirteen",
+		14: "fourteen",
+		15: "fifteen",
+		16: "sixteen",
+		17: "seventeen",
+		18: "eighteen",
+		19: "nineteen",
+	}
+	nb_cycle = nb
+	str_nb = ""
+	if nb_cycle >= 1000:
+		nb_now = nb_cycle // 1000
+		str_nb += f"{units[nb_now]} thousand "
+		nb_cycle -= nb_now * 1000
+	if nb_cycle >= 100:
+		nb_now = nb_cycle // 100
+		str_nb += f"{units[nb_now]} hundred "
+		nb_cycle -= nb_now * 100
+		if nb_cycle > 0:
+			str_nb += f"and "
+	if nb_cycle >= 10:
+		if nb_cycle in exception.keys():
+			nb_now = nb_cycle
+			str_nb += f"{exception[nb_now]} "
+		else:
+			nb_now = (nb_cycle // 10) * 10
+			str_nb += f"{decimal[nb_now]} "
+		nb_cycle -= nb_now
+
+	if nb_cycle > 0:
+		nb_now = nb_cycle
+		str_nb += f"{units[nb_now]} "
+		nb_cycle -= nb_now
+	return str_nb
+
+
+def get_len_without_chars(string, chars):
+	size = 0
+	for letter in string:
+		if letter not in chars:
+			size += 1
+	return size
+
+
+def problem_17():
+	total_size = 0
+	for nb in range(1, 1000 + 1):
+		str_nb = write_number(nb)
+		size_nb = get_len_without_chars(str_nb, " -")
+		total_size += size_nb
+		print(f"{nb:<5} of len {size_nb:<4} is : {str_nb}")
+	print(f"{total_size = }")
+	return total_size
+
+def problem_19():
+	def days_in_february(year):
+		days = 28
+		if year % 4 == 0:
+			if year % 100 != 0:
+				days += 1
+			elif year % 400 == 0:
+				days += 1
+		return days
+
+	month_days = {
+		1: lambda year: 31,
+		2: days_in_february,
+		3: lambda year: 31,
+		4: lambda year: 30,
+		5: lambda year: 31,
+		6: lambda year: 30,
+		7: lambda year: 31,
+		8: lambda year: 31,
+		9: lambda year: 30,
+		10: lambda year: 31,
+		11: lambda year: 30,
+		12: lambda year: 31,
+	} 
+
+
+	def add_one_week(date):
+		nb_days = month_days[date["month"]](date["year"])
+		if date["day"] + 7 <= nb_days:
+			date["day"] += 7
+		else:
+			date["day"] = (date["day"] + 7) - nb_days
+			if date["month"] == 12:
+				date["month"] = 1
+				date["year"] += 1
+			else:
+				date["month"] += 1
+		return date
+
+	sunday_date = {
+		"year": 1900,
+		"month": 1,
+		"day": 1 + 6, # for the first sunday
+	}
+	sundays = 0
+	while sunday_date["year"] < 2001:
+		if sunday_date["year"] > 1900:
+			if sunday_date["day"] == 1:
+				sundays += 1
+		sunday_date = add_one_week(sunday_date)
+	return sundays
+
 def problem_20():
 	return sum([int(l) for l in str(math.factorial(100))])
+
+def problem_22():
+	from src.numbers.p022_names import names
+
+	names.sort()
+	coefs = []
+	for name in names:
+		n_val = 0
+		for n in name:
+			n_val += (ord(n) - ord('A')) + 1
+		coefs.append(n_val)
+	
+	total_scores = 0
+	for i, coef in enumerate(coefs):
+		total_scores += (i + 1) * coef
+	return total_scores
 
 all_problems = {
     1: problem_1,
@@ -274,5 +422,8 @@ all_problems = {
     14: problem_14,
     15: problem_15,
     16: problem_16,
+    17: problem_17,
+    19: problem_19,
     20: problem_20,
+    22: problem_22,
 }
