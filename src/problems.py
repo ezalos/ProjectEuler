@@ -1,6 +1,6 @@
+import imp
 import math
 from functools import reduce
-import numbers
 import numpy as np
 from functools import lru_cache
 from tqdm import tqdm
@@ -204,7 +204,7 @@ def problem_12():
     return i
 
 def problem_13():
-    from src.numbers.problem_13 import _100_numbers_of_50_digits
+    from src.number_data.problem_13 import _100_numbers_of_50_digits
     result = 0
     for nb in _100_numbers_of_50_digits:
         result += int(nb)
@@ -389,8 +389,23 @@ def problem_19():
 def problem_20():
 	return sum([int(l) for l in str(math.factorial(100))])
 
+
+def problem_18():
+	from src.TriangleMaxPathSum import TriangleMaxPathSum
+	file_path = "./src/number_data/p018_trinagle_4.txt"
+	file_path = "./src/number_data/p018_trinagle_15.txt"
+	tmps = TriangleMaxPathSum(file_path)
+	return tmps.solve()
+
+
+def problem_67():
+	from src.TriangleMaxPathSum import TriangleMaxPathSum
+	file_path = "./src/number_data/p067_triangle_100.txt"
+	tmps = TriangleMaxPathSum(file_path)
+	return tmps.solve()
+
 def problem_22():
-	from src.numbers.p022_names import names
+	from src.number_data.p022_names import names
 
 	names.sort()
 	coefs = []
@@ -423,7 +438,9 @@ all_problems = {
     15: problem_15,
     16: problem_16,
     17: problem_17,
+    18: problem_18,
     19: problem_19,
     20: problem_20,
     22: problem_22,
+    67: problem_67,
 }
