@@ -5,6 +5,7 @@ import numpy as np
 from functools import lru_cache
 from tqdm import tqdm
 from src.utils import fibonacci, get_primes_up_to, get_prime_factors, is_palindrome, sum_to_nb, get_n_primes
+from src.individual_problems.problem_768 import solve_768_explicit
 
 
 def problem_1():
@@ -420,6 +421,12 @@ def problem_22():
 		total_scores += (i + 1) * coef
 	return total_scores
 
+
+def problem_768():
+    s = solve_768_explicit(n=360, m =20)
+    return s
+
+
 all_problems = {
     1: problem_1,
     2: problem_2,
@@ -443,4 +450,6 @@ all_problems = {
     20: problem_20,
     22: problem_22,
     67: problem_67,
+    67: problem_67,
+    768: problem_768, 
 }
