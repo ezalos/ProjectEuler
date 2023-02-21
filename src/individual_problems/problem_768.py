@@ -3,7 +3,7 @@ import math
 def mean(l):
     return sum(l) / len(l)
 
-def is_equalized_angle(board):
+def get_chandelier_gravity_center(board):
     epsilon = 1e-10
     xs = []
     ys = []
@@ -15,10 +15,8 @@ def is_equalized_angle(board):
             y = math.sin(theta)
             xs.append(x)
             ys.append(y)
-    c = (mean(xs), mean(ys))
-    if abs(c[0]) <= epsilon and abs(c[1]) <= epsilon:
-        return True
-    return False
+    c = sum((abs(mean(xs)), abs(mean(ys))))
+    return c
 
 
 def is_equalized_pair(board):
@@ -34,7 +32,7 @@ def is_equalized_pair(board):
     return True
 
 
-def fill_all_chandelers_recur(board, index, nb_candles, total_candles):
+def fill_all_chandeliers_recur(board, index, nb_candles, total_candles):
     if nb_candles == 0:
         if sum(board) == total_candles:
             return [board]
@@ -43,16 +41,14 @@ def fill_all_chandelers_recur(board, index, nb_candles, total_candles):
     for i in range(index, len(board)):
         cp_board = board[:]
         cp_board[i] = 1
-        solution = fill_all_chandelers_recur(cp_board, i + 1, nb_candles - 1, total_candles)
+        solution = fill_all_chandeliers_recur(cp_board, i + 1, nb_candles - 1, total_candles)
         if not solution is None: 
             all_solutions.extend(solution)
     return all_solutions
 
-def get_all_possible_chandelers(n, m):
-    # n /= 2
-    # m /= 2
+def get_all_possible_chandeliers(n, m):
     board = [0] * int(n)
-    all_boards = fill_all_chandelers_recur(board, 0, m, m)
+    all_boards = fill_all_chandeliers_recur(board, 0, m, m)
     return all_boards
 
 
@@ -99,7 +95,7 @@ def solve_768_explicit(n, m):
     total_boards = 0
     for c in common_divisors:
 
-        # all_boards = get_all_possible_chandelers(n // c, m //c)
+        # all_boards = get_all_possible_chandeliers(n // c, m //c)
         n_i = n // c
         m_i = m // c
 
@@ -124,20 +120,16 @@ def solve_768_explicit(n, m):
 
 
 def solve_768_iterative(n=24, m=12):
-    ret = get_all_possible_chandelers(n, m)
+    ret = get_all_possible_chandeliers(n, m)
     good = {}
     for i, sol in enumerate(ret):
-        elem = good.get(i, [])
-        # if is_equalized_pair(sol):
-        #     elem.append("PAIR")
-        if is_equalized_angle(sol):
-            elem.append("ANGL")
-        if len(elem):
-            good[i] = elem
-        if len(elem) == 1:
-            print(f"{i = } {sol = } {elem = }")
+        c = get_chandelier_gravity_center(sol)
+        if c < 1e-10:
+            good[i] = sol
+            print(f"{i = } {sol = } {c = }")
     print(f"{len(good.keys()) = }")
     print(f"{len(ret) = }")
+
 
 examples = [
     {
@@ -161,6 +153,11 @@ examples = [
     }
 ]
 
-for example in examples:
-    solve_768(*example["args"])
-    print(f"{example['return'] = }")
+if __name__ == "__main__":
+    n = 24
+    m = 12
+    solve_768_iterative(n, m)
+    solve_768_explicit(n, m)
+    # for example in examples:
+    #     solve_768_explicit(*example["args"])
+    #     print(f"{example['return'] = }")
